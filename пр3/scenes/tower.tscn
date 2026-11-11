@@ -1,0 +1,53 @@
+[gd_scene format=3 uid="uid://c6kk40cy0gvs1"]
+
+[ext_resource type="Script" uid="uid://pq1lpwtxxyok" path="res://scripts/HealthComponent.cs" id="2_health"]
+[ext_resource type="Script" uid="uid://chortrb6036ua" path="res://scripts/ShootComponent.cs" id="3_shoot"]
+[ext_resource type="Script" uid="uid://bvbhmm0h73132" path="res://scripts/VisibilityComponent.cs" id="4_visibility"]
+[ext_resource type="PackedScene" uid="uid://wufur1h0fli0" path="res://scenes/bullet.tscn" id="5_bullet"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nygq5"]
+albedo_color = Color(0.16, 0.85, 0.34, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_ssfw2"]
+material = SubResource("StandardMaterial3D_nygq5")
+
+[sub_resource type="CylinderShape3D" id="BodyShape"]
+height = 0.9
+radius = 1.25
+
+[sub_resource type="SphereShape3D" id="SightShape"]
+radius = 7.5
+
+[node name="Tower" type="StaticBody3D" unique_id=1753299318 groups=["player", "tower"]]
+collision_layer = 2
+collision_mask = 0
+
+[node name="Visual" type="Node3D" parent="." unique_id=837790925]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Visual" unique_id=944643501]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45, 0)
+mesh = SubResource("CylinderMesh_ssfw2")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=2072664010]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45, 0)
+shape = SubResource("BodyShape")
+
+[node name="HealthComponent" type="Node" parent="." unique_id=1926520688]
+script = ExtResource("2_health")
+MaxHealth = 5
+
+[node name="ShootComponent" type="Node" parent="." unique_id=923327205]
+script = ExtResource("3_shoot")
+BulletScene = ExtResource("5_bullet")
+MuzzleHeight = 0.48
+SpawnOffset = 1.65
+
+[node name="VisibilityComponent" type="Area3D" parent="." unique_id=1432879928]
+collision_layer = 0
+collision_mask = 4
+script = ExtResource("4_visibility")
+DetectionRadius = 7.5
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VisibilityComponent" unique_id=1110729676]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45, 0)
+shape = SubResource("SightShape")

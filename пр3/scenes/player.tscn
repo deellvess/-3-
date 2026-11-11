@@ -1,0 +1,59 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/PlayerController.cs" id="1_player"]
+[ext_resource type="Script" path="res://scripts/HealthComponent.cs" id="2_health"]
+[ext_resource type="PackedScene" path="res://scenes/bullet.tscn" id="3_bullet"]
+[ext_resource type="PackedScene" path="res://scenes/tower.tscn" id="4_tower"]
+[ext_resource type="PackedScene" path="res://scenes/poison_tower.tscn" id="5_poison"]
+[ext_resource type="PackedScene" path="res://scenes/freeze_tower.tscn" id="6_freeze"]
+
+[sub_resource type="StandardMaterial3D" id="PlayerMaterial"]
+albedo_color = Color(0.13, 0.85, 0.28, 1)
+
+[sub_resource type="CapsuleMesh" id="PlayerMesh"]
+radius = 0.4
+height = 1.5
+material = SubResource("PlayerMaterial")
+
+[sub_resource type="CapsuleShape3D" id="PlayerShape"]
+radius = 0.4
+height = 1.5
+
+[sub_resource type="CylinderMesh" id="PreviewMesh"]
+top_radius = 0.9
+bottom_radius = 1.1
+height = 0.9
+
+[sub_resource type="StandardMaterial3D" id="PreviewMaterial"]
+transparency = 1
+shading_mode = 0
+albedo_color = Color(0.2, 1, 0.4, 0.5)
+
+[node name="Player" type="CharacterBody3D" groups=["player"]]
+collision_layer = 2
+collision_mask = 5
+script = ExtResource("1_player")
+BulletScene = ExtResource("3_bullet")
+BasicTowerScene = ExtResource("4_tower")
+PoisonTowerScene = ExtResource("5_poison")
+FreezeTowerScene = ExtResource("6_freeze")
+
+[node name="Visual" type="Node3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
+mesh = SubResource("PlayerMesh")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
+shape = SubResource("PlayerShape")
+
+[node name="HealthComponent" type="Node" parent="."]
+script = ExtResource("2_health")
+MaxHealth = 8
+
+[node name="TowerPreview" type="MeshInstance3D" parent="."]
+top_level = true
+visible = false
+material_override = SubResource("PreviewMaterial")
+mesh = SubResource("PreviewMesh")

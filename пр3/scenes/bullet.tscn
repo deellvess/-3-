@@ -1,0 +1,39 @@
+[gd_scene format=3 uid="uid://wufur1h0fli0"]
+
+[ext_resource type="Script" uid="uid://de8s4cwdfdyxq" path="res://scripts/Bullet.cs" id="1_bullet"]
+[ext_resource type="Script" path="res://scripts/DamagingComponent.cs" id="2_damage"]
+
+[sub_resource type="SphereShape3D" id="BulletShape"]
+radius = 0.16
+
+[sub_resource type="StandardMaterial3D" id="BulletMaterial"]
+albedo_color = Color(0.18, 1, 0.35, 1)
+metallic_specular = 0.49
+emission_enabled = true
+emission = Color(0.16, 0.8, 0.28, 1)
+emission_energy_multiplier = 2.75
+
+[sub_resource type="SphereMesh" id="BulletMesh"]
+radius = 0.14
+height = 0.28
+
+[node name="Bullet" type="Node3D" unique_id=148975703]
+script = ExtResource("1_bullet")
+
+[node name="DamagingComponent" type="Area3D" parent="."]
+collision_layer = 0
+collision_mask = 6
+script = ExtResource("2_damage")
+TargetGroups = PackedStringArray("enemy")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="DamagingComponent" unique_id=178946723]
+shape = SubResource("BulletShape")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=788840250]
+material_override = SubResource("BulletMaterial")
+mesh = SubResource("BulletMesh")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="." unique_id=1756665796]
+light_color = Color(0.3, 1, 0.4, 1)
+light_energy = 0.5
+omni_range = 1.1674781

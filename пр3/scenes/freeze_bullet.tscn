@@ -1,0 +1,37 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/Bullet.cs" id="1_bullet"]
+[ext_resource type="Script" path="res://scripts/FreezeDamageComponent.cs" id="2_damage"]
+
+[sub_resource type="SphereShape3D" id="HitShape"]
+radius = 0.22
+
+[sub_resource type="StandardMaterial3D" id="FreezeMaterial"]
+albedo_color = Color(0.3, 0.75, 1, 1)
+emission_enabled = true
+emission = Color(0.2, 0.65, 1, 1)
+
+[sub_resource type="BoxMesh" id="FreezeMesh"]
+size = Vector3(0.36, 0.36, 0.36)
+
+[node name="FreezeBullet" type="Node3D"]
+script = ExtResource("1_bullet")
+Speed = 11.0
+
+[node name="DamagingComponent" type="Area3D" parent="."]
+collision_layer = 0
+collision_mask = 4
+script = ExtResource("2_damage")
+TargetGroups = PackedStringArray("enemy")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="DamagingComponent"]
+shape = SubResource("HitShape")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+material_override = SubResource("FreezeMaterial")
+mesh = SubResource("FreezeMesh")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="."]
+light_color = Color(0.35, 0.7, 1, 1)
+light_energy = 0.5
+omni_range = 1.3

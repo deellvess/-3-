@@ -1,0 +1,38 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/Bullet.cs" id="1_bullet"]
+[ext_resource type="Script" path="res://scripts/PoisonDamageComponent.cs" id="2_damage"]
+
+[sub_resource type="SphereShape3D" id="HitShape"]
+radius = 0.2
+
+[sub_resource type="StandardMaterial3D" id="PoisonMaterial"]
+albedo_color = Color(0.45, 0.95, 0.12, 1)
+emission_enabled = true
+emission = Color(0.26, 0.8, 0.09, 1)
+
+[sub_resource type="SphereMesh" id="PoisonMesh"]
+radius = 0.18
+height = 0.36
+
+[node name="PoisonBullet" type="Node3D"]
+script = ExtResource("1_bullet")
+Speed = 10.0
+
+[node name="DamagingComponent" type="Area3D" parent="."]
+collision_layer = 0
+collision_mask = 4
+script = ExtResource("2_damage")
+TargetGroups = PackedStringArray("enemy")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="DamagingComponent"]
+shape = SubResource("HitShape")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+material_override = SubResource("PoisonMaterial")
+mesh = SubResource("PoisonMesh")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="."]
+light_color = Color(0.42, 1, 0.15, 1)
+light_energy = 0.5
+omni_range = 1.3

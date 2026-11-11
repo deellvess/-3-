@@ -1,0 +1,71 @@
+[gd_scene format=3 uid="uid://bvwq23u4dtncm"]
+
+[ext_resource type="Script" uid="uid://eggskrj41oww" path="res://scripts/GameManager.cs" id="1_manager"]
+[ext_resource type="PackedScene" uid="uid://c6kk40cy0gvs1" path="res://scenes/tower.tscn" id="2_tower"]
+[ext_resource type="PackedScene" path="res://scenes/poison_tower.tscn" id="3_poison"]
+[ext_resource type="PackedScene" path="res://scenes/freeze_tower.tscn" id="4_freeze"]
+[ext_resource type="PackedScene" uid="uid://08ue5w8gkd13" path="res://scenes/enemy_tower.tscn" id="5_enemy"]
+[ext_resource type="PackedScene" path="res://scenes/crawler.tscn" id="6_crawler"]
+[ext_resource type="PackedScene" path="res://scenes/player.tscn" id="7_player"]
+[ext_resource type="PackedScene" path="res://scenes/core.tscn" id="8_core"]
+
+[sub_resource type="StandardMaterial3D" id="GroundMaterial"]
+albedo_color = Color(0.12, 0.17, 0.19, 1)
+
+[sub_resource type="PlaneMesh" id="GroundMesh"]
+size = Vector2(44, 44)
+
+[sub_resource type="BoxShape3D" id="GroundShape"]
+size = Vector3(44, 0.2, 44)
+
+[node name="Main" type="Node3D" unique_id=1375585911]
+script = ExtResource("1_manager")
+RangedEnemyScene = ExtResource("5_enemy")
+CrawlerScene = ExtResource("6_crawler")
+
+[node name="Ground" type="StaticBody3D" parent="." unique_id=1845137849]
+collision_mask = 0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Ground" unique_id=298940025]
+material_override = SubResource("GroundMaterial")
+mesh = SubResource("GroundMesh")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground" unique_id=236023818]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
+shape = SubResource("GroundShape")
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=1350999390]
+transform = Transform3D(1, 0, 0, 0, 0.503871, 0.863779, 0, -0.863779, 0.503871, 0, 24, 14)
+projection = 1
+current = true
+size = 34.0
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=863438633]
+transform = Transform3D(0.93049407, -0.12320784, 0.34496477, -0.19503835, 0.630506, 0.7512804, -0.31006598, -0.76634336, 0.56265175, -2.7915716, 1, 0.2987702)
+shadow_enabled = true
+
+[node name="Core" parent="." unique_id=662647962 instance=ExtResource("8_core")]
+
+[node name="Player" parent="." unique_id=1890357810 instance=ExtResource("7_player")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0, 5)
+
+[node name="TowerStandard" parent="." unique_id=1183906332 instance=ExtResource("2_tower")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, -2)
+
+[node name="TowerPoison" parent="." unique_id=2403143 instance=ExtResource("3_poison")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, -2)
+
+[node name="TowerFreeze" parent="." unique_id=1289605915 instance=ExtResource("4_freeze")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 5)
+
+[node name="EnemyNorth" parent="." unique_id=493559314 instance=ExtResource("5_enemy")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13, 0, -14)
+
+[node name="EnemyEast" parent="." unique_id=99494653 instance=ExtResource("5_enemy")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 0, 10)
+
+[node name="CrawlerWest" parent="." unique_id=1010955174 instance=ExtResource("6_crawler")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 0, 7)
+
+[node name="CrawlerSouth" parent="." unique_id=2036018965 instance=ExtResource("6_crawler")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11, 0, 15)

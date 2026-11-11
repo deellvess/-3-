@@ -1,0 +1,59 @@
+[gd_scene format=3 uid="uid://08ue5w8gkd13"]
+
+[ext_resource type="Script" uid="uid://pq1lpwtxxyok" path="res://scripts/HealthComponent.cs" id="2_health"]
+[ext_resource type="Script" uid="uid://chortrb6036ua" path="res://scripts/ShootComponent.cs" id="3_shoot"]
+[ext_resource type="Script" uid="uid://bvbhmm0h73132" path="res://scripts/VisibilityComponent.cs" id="4_visibility"]
+[ext_resource type="Script" uid="uid://cxwij4pc6x82g" path="res://scripts/MoveComponent.cs" id="5_move"]
+[ext_resource type="PackedScene" path="res://scenes/enemy_bullet.tscn" id="6_bullet"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jxdju"]
+albedo_color = Color(0.94, 0.18, 0.2, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_nygq5"]
+material = SubResource("StandardMaterial3D_jxdju")
+
+[sub_resource type="CylinderShape3D" id="BodyShape"]
+height = 0.9
+radius = 1.25
+
+[sub_resource type="SphereShape3D" id="SightShape"]
+radius = 7.5
+
+[node name="EnemyTower" type="CharacterBody3D" unique_id=447233732 groups=["enemy"]]
+collision_layer = 4
+collision_mask = 7
+
+[node name="Visual" type="Node3D" parent="." unique_id=558887585]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Visual" unique_id=1769860529]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45, 0)
+mesh = SubResource("CylinderMesh_nygq5")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=970982372]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45, 0)
+shape = SubResource("BodyShape")
+
+[node name="HealthComponent" type="Node" parent="." unique_id=460616177]
+script = ExtResource("2_health")
+MaxHealth = 5
+
+[node name="ShootComponent" type="Node" parent="." unique_id=477755037]
+script = ExtResource("3_shoot")
+BulletScene = ExtResource("6_bullet")
+MuzzleHeight = 0.48
+SpawnOffset = 1.65
+
+[node name="MoveComponent" type="Node" parent="." unique_id=1260202934]
+script = ExtResource("5_move")
+Speed = 2.4
+
+[node name="VisibilityComponent" type="Area3D" parent="." unique_id=186410023]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("4_visibility")
+TargetGroup = "player"
+DetectionRadius = 7.5
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VisibilityComponent" unique_id=1735604134]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45, 0)
+shape = SubResource("SightShape")

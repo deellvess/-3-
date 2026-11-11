@@ -1,0 +1,51 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/Crawler.cs" id="1_crawler"]
+[ext_resource type="Script" path="res://scripts/HealthComponent.cs" id="2_health"]
+[ext_resource type="Script" path="res://scripts/DamagingComponent.cs" id="3_damage"]
+
+[sub_resource type="StandardMaterial3D" id="CrawlerMaterial"]
+albedo_color = Color(0.85, 0.12, 0.18, 1)
+
+[sub_resource type="CapsuleMesh" id="CrawlerMesh"]
+radius = 0.5
+height = 1.0
+material = SubResource("CrawlerMaterial")
+
+[sub_resource type="CapsuleShape3D" id="BodyShape"]
+radius = 0.5
+height = 1.0
+
+[sub_resource type="SphereShape3D" id="AttackShape"]
+radius = 0.95
+
+[node name="Crawler" type="CharacterBody3D" groups=["enemy"]]
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("1_crawler")
+
+[node name="Visual" type="Node3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+mesh = SubResource("CrawlerMesh")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+shape = SubResource("BodyShape")
+
+[node name="HealthComponent" type="Node" parent="."]
+script = ExtResource("2_health")
+MaxHealth = 4
+
+[node name="DamagingComponent" type="Area3D" parent="."]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("3_damage")
+TargetGroups = PackedStringArray("player")
+OneShot = false
+RepeatInterval = 1.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="DamagingComponent"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+shape = SubResource("AttackShape")

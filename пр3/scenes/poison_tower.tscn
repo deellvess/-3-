@@ -1,0 +1,68 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/HealthComponent.cs" id="2_health"]
+[ext_resource type="Script" path="res://scripts/ShootComponent.cs" id="3_shoot"]
+[ext_resource type="Script" path="res://scripts/VisibilityComponent.cs" id="4_visibility"]
+[ext_resource type="PackedScene" path="res://scenes/poison_bullet.tscn" id="5_bullet"]
+
+[sub_resource type="StandardMaterial3D" id="BodyMaterial"]
+albedo_color = Color(0.55, 0.9, 0.12, 1)
+
+[sub_resource type="StandardMaterial3D" id="AccentMaterial"]
+albedo_color = Color(0.82, 0.2, 0.85, 1)
+
+[sub_resource type="CylinderMesh" id="BodyMesh"]
+top_radius = 0.55
+bottom_radius = 0.85
+height = 1.1
+
+[sub_resource type="SphereMesh" id="TopMesh"]
+radius = 0.5
+height = 1.0
+
+[sub_resource type="CylinderShape3D" id="BodyShape"]
+height = 1.1
+radius = 0.85
+
+[sub_resource type="SphereShape3D" id="SightShape"]
+radius = 7.5
+
+[node name="PoisonTower" type="StaticBody3D" groups=["player", "tower"]]
+collision_layer = 2
+collision_mask = 0
+
+[node name="Visual" type="Node3D" parent="."]
+
+[node name="Body" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.55, 0)
+mesh = SubResource("BodyMesh")
+material_override = SubResource("BodyMaterial")
+
+[node name="Crown" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.25, 0)
+mesh = SubResource("TopMesh")
+material_override = SubResource("AccentMaterial")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.55, 0)
+shape = SubResource("BodyShape")
+
+[node name="HealthComponent" type="Node" parent="."]
+script = ExtResource("2_health")
+MaxHealth = 6
+
+[node name="ShootComponent" type="Node" parent="."]
+script = ExtResource("3_shoot")
+BulletScene = ExtResource("5_bullet")
+MuzzleHeight = 0.7
+SpawnOffset = 1.2
+
+[node name="VisibilityComponent" type="Area3D" parent="."]
+collision_layer = 0
+collision_mask = 4
+script = ExtResource("4_visibility")
+DetectionRadius = 7.5
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VisibilityComponent"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.55, 0)
+shape = SubResource("SightShape")
